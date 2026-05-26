@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRouter from "./routes/auth.js";
-import postsRouter from "./routes/auth.js";
+import postsRouter from "./routes/post.js";
 import { connectDB } from "./db/index.js";
 
 dotenv.config();
@@ -9,9 +9,10 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(express.json());
+
 app.use("/auth", authRouter);
 app.use("/posts", postsRouter);
-
 
 connectDB()
   .then(() => {
@@ -19,6 +20,7 @@ connectDB()
       console.log(`Server is running at http://127.0.0.1:${port}`);
     });
   })
-  .catch((err) => {
+  .catch((error) => {
     console.error("Failed to connect db and start server!", error);
   });
+  
