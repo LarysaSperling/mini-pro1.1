@@ -1,0 +1,112 @@
+{
+  "info": {
+    "_postman_id": "1634a0bc-9cce-446b-8e42-ffdf82f5fde9",
+    "name": "Mini Project Auth API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53918136"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"nora\",\r\n  \"password\": \"123456\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3333/auth/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3333",
+          "path": [
+            "auth",
+            "register"
+          ]
+        },
+        "description": "## Register User\n\nCreates a new user account by accepting a username and password. On success, returns a confirmation message along with the newly created user's ID.\n\n---\n\n## Request Details\n\n| Property | Value |\n| --- | --- |\n| **Method** | `POST` |\n| **URL** | `http://localhost:3333/auth/register` |\n| **Body Type** | `raw (JSON)` |\n\n---\n\n## Request Body Parameters\n\n| Parameter | Type | Required | Description |\n| --- | --- | --- | --- |\n| `username` | `string` | ✅ Yes | The desired username for the new account |\n| `password` | `string` | ✅ Yes | The password for the new account |\n\n---\n\n## Sample Request Body\n\n``` json\n{\n  \"username\": \"nora\",\n  \"password\": \"123456\"\n}\n\n ```\n\n---\n\n## Response Details\n\n### Success — `201 Created`\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `message` | `string` | Confirmation message indicating successful registration |\n| `userId` | `string` | The unique identifier of the newly created user |\n\n---\n\n## Sample Success Response\n\n``` json\n{\n  \"message\": \"User registered successfully\",\n  \"userId\": \"6a182e12611b451057551034\"\n}\n\n ```"
+      },
+      "response": []
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"nora\",\r\n  \"password\": \"123456\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3333/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3333",
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "description": "## Login User\n\nAuthenticates an existing user and returns a JWT token to be used for subsequent authenticated requests.\n\n### Endpoint\n\n`POST http://localhost:3333/auth/login`\n\n### Request Body\n\nSend a JSON object with the following fields:\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `username` | string | Yes | The username of the registered user |\n| `password` | string | Yes | The user's password |\n\n**Example:**\n\n``` json\n{\n  \"username\": \"nora\",\n  \"password\": \"123456\"\n}\n\n ```\n\n### Response\n\n**200 OK** — Login successful. Returns a JWT token.\n\n``` json\n{\n  \"message\": \"Login successful\",\n  \"token\": \"<jwt_token>\"\n}\n\n ```\n\nThe returned `token` is a signed JWT (HS256) that expires 1 hour after issuance. Include it in the `Authorization` header as a Bearer token for protected endpoints.\n\n### Notes\n\n- Returns `401 Unauthorized` if the credentials are invalid.\n    \n- The token payload contains the user `id`, `username`, `iat` (issued at), and `exp` (expiry)."
+      },
+      "response": []
+    },
+    {
+      "name": "Get all posts",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTgyZTEyNjExYjQ1MTA1NzU1MTAzNCIsInVzZXJuYW1lIjoibm9yYSIsImlhdCI6MTc3OTk2OTYwMywiZXhwIjoxNzc5OTczMjAzfQ.OLNOHlhDCgaOjPuM4zsh-BGOBO2C8h5uX3I3nXwm5og",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:3333/posts",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "3333",
+          "path": [
+            "posts"
+          ]
+        },
+        "description": "## Get All Posts\n\nRetrieves a list of all posts available in the system. Returns an array of post objects, each containing details such as the title, content, publication status, author information, and creation timestamp.\n\n---\n\n### HTTP Method & URL\n\n```\nGET http://127.0.0.1:3333/posts\n\n ```\n\n---\n\n### Authentication\n\nThis endpoint is part of the **Auth API** project. Authentication may be required depending on the server configuration. If protected, include a valid Bearer token in the `Authorization` header:\n\n```\nAuthorization: Bearer <your_token>\n\n ```\n\n---\n\n### Request Details\n\nNo parameters are required for this request.\n\n| Type | Details |\n| --- | --- |\n| Headers | None required |\n| Query Params | None |\n| Request Body | None |\n\n---\n\n### Response Details\n\n**Status:** `200 OK`\n\nReturns a JSON **array** of post objects. Each object contains the following fields:\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `_id` | `string` | Unique identifier of the post |\n| `title` | `string` | Title of the post |\n| `content` | `string` | Body/content of the post |\n| `published` | `boolean` | Whether the post is published (`true`/`false`) |\n| `authorId` | `string` | Unique identifier of the post's author |\n| `authorUsername` | `string` | Username of the post's author |\n| `createdAt` | `string` | ISO 8601 timestamp of when the post was created |\n\n---\n\n### Sample Response\n\n``` json\n[\n  {\n    \"_id\": \"6a18269c748add18b285b0d1\",\n    \"title\": \"My first post\",\n    \"content\": \"Hello, this is my post\",\n    \"published\": true,\n    \"authorId\": \"6a1825de748add18b285b0d0\",\n    \"authorUsername\": \"lora\",\n    \"createdAt\": \"2026-05-28T11:27:24.136Z\"\n  }\n]\n\n ```"
+      },
+      "response": []
+    },
+    {
+      "name": "Create post",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "description": "Creates a new post for the authenticated user.\n\n**Endpoint:** `POST http://127.0.0.1:3333/posts`\n\n**Authentication:** Required (use a valid Bearer token in the Authorization header).\n\n**Request Body (JSON):**\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| title | string | Yes | The title of the post |\n| content | string | Yes | The body/content of the post |\n| published | boolean | Yes | Whether the post should be publicly visible |\n\n**Example Request Body:**\n\n``` json\n{\n  \"title\": \"My first post\",\n  \"content\": \"This is my first protected post\",\n  \"published\": true\n}\n\n ```\n\n**Success Response (201 Created):**\n\n``` json\n{\n  \"message\": \"Post created successfully\",\n  \"postId\": \"<generated-post-id>\"\n}\n\n ```"
+      },
+      "response": []
+    }
+  ]
+}
